@@ -11,31 +11,24 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, '13.0'
   s.swift_version = '5.9'
+  s.requires_arc = true
 
-  s.subspec 'CAtomic' do |ss|
-    ss.source_files = 'Sources/CAtomic/**/*.swift'
-  end
+  s.source_files = [
+    'Sources/Markdown/**/*.swift',
+    'Sources/CAtomic/**/*.swift',
+    'Vendor/swift-cmark/Sources/cmark-gfm/src/**/*.{c,h}',
+    'Vendor/swift-cmark/Sources/cmark-gfm-extensions/src/**/*.{c,h}'
+  ]
 
-  s.subspec 'cmark-gfm' do |ss|
-    ss.source_files = 'Vendor/swift-cmark/src/**/*.{c,h}'
-    ss.public_header_files = 'Vendor/swift-cmark/src/**/*.h'
-    ss.header_mappings_dir = 'Vendor/swift-cmark/src'
-  end
+  s.public_header_files = [
+    'Vendor/swift-cmark/src/**/*.h',
+    'Vendor/swift-cmark/extensions/**/*.h'
+  ]
 
-  s.subspec 'cmark-gfm-extensions' do |ss|
-    ss.source_files = 'Vendor/swift-cmark/extensions/**/*.{c,h}'
-    ss.public_header_files = 'Vendor/swift-cmark/extensions/**/*.h'
-    ss.header_mappings_dir = 'Vendor/swift-cmark/extensions'
-    ss.dependency 'SwiftMarkdown/cmark-gfm'
-  end
+  s.header_mappings_dir = 'Vendor/swift-cmark'
 
-  s.subspec 'Markdown' do |ss|
-    ss.source_files = 'Sources/Markdown/**/*.swift'
-    ss.dependency 'SwiftMarkdown/CAtomic'
-    ss.dependency 'SwiftMarkdown/cmark-gfm'
-    ss.dependency 'SwiftMarkdown/cmark-gfm-extensions'
-  end
-
-  # default
-  s.default_subspecs = 'Markdown'
+  s.pod_target_xcconfig = {
+    'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES',
+    'DEFINES_MODULE' => 'YES'
+  }
 end
