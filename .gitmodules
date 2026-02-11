@@ -1,0 +1,3 @@
+[submodule "Vendor/swift-cmark"]
+	path = Vendor/swift-cmark
+	url = https://github.com/apple/swift-cmark.git
